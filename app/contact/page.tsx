@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Mail, Phone, MapPin } from "lucide-react";
 import toast from "react-hot-toast";
+import ImpactStats from "@/components/sections/imapctStats";
+import Footer from "@/components/Footer";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -165,6 +167,9 @@ export default function ContactPage() {
             </form>
           </Card>
         </div>
+        <div className="mt-12">
+          <ImpactStats />
+        </div>
         <div>
           {/* Map Section */}
           <section className="py-20 relative overflow-hidden">
@@ -190,6 +195,9 @@ export default function ContactPage() {
           </section>
         </div>
       </section>
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 }

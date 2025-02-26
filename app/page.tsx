@@ -27,8 +27,8 @@ export default function Home() {
           </div>
 
           {/* All Courses Section */}
-          <h2 className="text-3xl font-bold text-center mb-12 ">
-            Explore All Courses
+          <h2 className="text-4xl font-bold text-center mb-12 ">
+            Explore All Courses_
           </h2>
           <Tabs defaultValue="development" className="w-full ">
             <TabsList className="flex justify-center mb-8 bg-indigo-50">
@@ -102,7 +102,7 @@ export default function Home() {
         <div>
           <StatsSection />
         </div>
-       
+
         <div>
           <Footer />
         </div>

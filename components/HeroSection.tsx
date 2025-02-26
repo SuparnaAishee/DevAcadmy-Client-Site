@@ -42,8 +42,8 @@ import { ArrowRight } from "lucide-react";
 
 export default function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent pt-16 pb-24 px-12">
-      <div className="container mx-auto px-4">
+    <section className="relative bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent pt-16 pb-24 px-12 ">
+      <div className="container mx-auto px-4 pl-8 pr-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
@@ -63,11 +63,11 @@ export default function HeroSection() {
               </Button>
             </div>
           </div>
-          <div className="relative lg:h-[500px] pt-12">
+          <div className="relative lg:h-[500px] pt-12 ">
             <img
               src="https://res.cloudinary.com/dwelabpll/image/upload/v1740142788/e-learning-concept-free-vector_syiz7n.jpg"
               alt="Learning platform preview"
-              className="rounded-xl shadow-xl w-full h-auto object-cover"
+              className="rounded-xl shadow-lg w-full h-auto object-cover bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent"
             />
           </div>
         </div>

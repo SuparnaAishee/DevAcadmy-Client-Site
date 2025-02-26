@@ -59,4 +59,57 @@ export const lectureService = {
       );
     }
   },
+  // Add new lecture
+  async addLecture(newLecture: Lecture): Promise<Lecture> {
+    try {
+      const response = await axiosInstance.post("/lecture/create", newLecture);
+      console.log("Lecture added response:", response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error(
+        "Error in addLecture:",
+        error.response?.data || error.message
+      );
+      throw new Error(error.response?.data?.message || "Failed to add lecture");
+    }
+  },
+
+  // Update existing lecture
+  async updateLecture(
+    lectureId: string,
+    updatedLecture: Lecture
+  ): Promise<Lecture> {
+    try {
+      const response = await axiosInstance.put(
+        `/lecture/${lectureId}`,
+        updatedLecture
+      );
+      console.log("Lecture updated response:", response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error(
+        "Error in updateLecture:",
+        error.response?.data || error.message
+      );
+      throw new Error(
+        error.response?.data?.message || "Failed to update lecture"
+      );
+    }
+  },
+
+  // Delete a lecture
+  async deleteLecture(lectureId: string): Promise<void> {
+    try {
+      await axiosInstance.delete(`/lecture/${lectureId}`);
+      console.log("Lecture deleted successfully");
+    } catch (error: any) {
+      console.error(
+        "Error in deleteLecture:",
+        error.response?.data || error.message
+      );
+      throw new Error(
+        error.response?.data?.message || "Failed to delete lecture"
+      );
+    }
+  },
 };

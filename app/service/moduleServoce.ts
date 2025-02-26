@@ -84,8 +84,8 @@ export const moduleService = {
   }) {
     try {
       const response = await axiosInstance.post("/module/create", {
-        course: moduleData.courseId, 
-        title: moduleData.name, 
+        course: moduleData.courseId,
+        title: moduleData.name,
         description: moduleData.description,
         moduleNumber: moduleData.moduleNumber,
       });
@@ -102,6 +102,29 @@ export const moduleService = {
     } catch (error) {
       console.error("Error checking course existence:", error);
       return false;
+    }
+  },
+ 
+  async updateModule(
+    moduleId: string,
+    updatedData: {
+      name: string;
+      description: string;
+      courseId: string;
+      moduleNumber: number;
+      totalLectures: number;
+      title: string;
+    }
+  ) {
+    try {
+      const response = await axiosInstance.put(
+        `/module/${moduleId}`,
+        updatedData
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error updating module:", error);
+      throw new Error("Failed to update module");
     }
   },
 };

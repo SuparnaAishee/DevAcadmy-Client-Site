@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 const teamMembers = [
   {
@@ -216,6 +217,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      <div><Footer/></div>
     </div>
   );
 }

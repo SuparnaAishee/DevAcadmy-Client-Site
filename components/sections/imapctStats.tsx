@@ -56,19 +56,19 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
 export default function ImpactStats() {
   return (
     <section className="relative overflow-hidden py-20">
-      <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent" />
-      <div className="container relative mx-auto px-4">
+      <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent pl-8 pr-8" />
+      <div className="container relative mx-auto px-4 pl-8 pr-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Our Impact_</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Impact_</h2>
           <div className="w-20 h-1 bg-primary/20 mx-auto" />
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 pl-8 pr-8">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
@@ -77,8 +77,8 @@ export default function ImpactStats() {
               transition={{ duration: 0.5, delay: index * 0.2 }}
               className="relative p-6 rounded-xl bg-gradient-to-tr from-primary/10 via-primary/5 to-transparent"
             >
-              <div className="text-center">
-                <div className="text-5xl md:text-6xl font-bold text-primary mb-4">
+              <div className="text-center ">
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-4 ">
                   <Counter value={stat.value} suffix={stat.suffix} />
                 </div>
                 <p className="text-muted-foreground text-lg">{stat.label}</p>
