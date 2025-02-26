@@ -44,7 +44,14 @@ export default function AuthForm({ defaultTab }: AuthFormProps) {
       const response = await authService.login(loginData);
       localStorage.setItem("accessToken", response.accessToken);
       toast.success("Logged in successfully!");
-      router.push("/"); // Redirect to home page after successful login
+
+      // Redirect to home page after successful login
+      router.push("/");
+
+      // Reload the page after the redirect
+      setTimeout(() => {
+        window.location.reload();
+      }, 100); // Delay the reload to ensure redirection is complete
     } catch (error) {
       console.error("Login failed", error);
       setError(

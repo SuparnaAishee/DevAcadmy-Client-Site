@@ -76,4 +76,32 @@ export const moduleService = {
       throw error;
     }
   },
+  async addModule(moduleData: {
+    courseId: string;
+    name: string;
+    description: string;
+    moduleNumber: number;
+  }) {
+    try {
+      const response = await axiosInstance.post("/module/create", {
+        course: moduleData.courseId, 
+        title: moduleData.name, 
+        description: moduleData.description,
+        moduleNumber: moduleData.moduleNumber,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error adding module:", error);
+      throw new Error("Failed to add module");
+    }
+  },
+  async checkCourseExists(courseId: string): Promise<boolean> {
+    try {
+      const response = await axiosInstance.get(`/course/${courseId}`);
+      return response.status === 200;
+    } catch (error) {
+      console.error("Error checking course existence:", error);
+      return false;
+    }
+  },
 };

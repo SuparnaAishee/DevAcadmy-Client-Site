@@ -101,54 +101,59 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Globe, Menu } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { authService } from "@/app/service/AuthService";
 import toast from "react-hot-toast";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const router = useRouter();
 
-  // Function to check login status and set state accordingly
-  const checkLoginStatus = () => {
+  const checkAuthStatus = useCallback(() => {
     const loggedIn = authService.isLoggedIn();
     setIsLoggedIn(loggedIn);
-
     if (loggedIn) {
-      const role = authService.getUserRole();
-      setUserRole(role);
+      setUserRole(authService.getUserRole());
     } else {
       setUserRole(null);
     }
-  };
+  }, []);
 
-  // useEffect to check login status initially and whenever the component is rendered
   useEffect(() => {
-    // Check login status on mount
-    checkLoginStatus();
+    checkAuthStatus();
 
-    // Listen for changes to localStorage (triggered on login/logout)
-    const handleStorageChange = () => {
-      checkLoginStatus();
+    const isLoginRedirect = sessionStorage.getItem("loginRedirect");
+    if (isLoginRedirect === "true" && window.location.pathname === "/") {
+      sessionStorage.removeItem("loginRedirect");
+      window.location.reload();
+    }
+
+    // Listen for route changes
+    const handleRouteChange = () => {
+      if (window.location.pathname === "/" && authService.isLoggedIn()) {
+       
+        sessionStorage.setItem("loginRedirect", "true");
+         
+      }
     };
 
-    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("popstate", handleRouteChange);
 
-    // Cleanup listener on unmount
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("popstate", handleRouteChange);
     };
-  }, []); // Empty dependency array ensures this effect runs once on mount
+  }, [checkAuthStatus]);
 
-  // Handle logout
   const handleLogout = () => {
     authService.logout();
-    setIsLoggedIn(false); // Manually update state on logout
-    setUserRole(null); // Clear user role on logout
     toast.success("Logged out successfully!");
-    router.push("/"); // Redirect to home page
+    router.push("/");
+   
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   return (
@@ -182,7 +187,6 @@ export default function Navbar() {
               Contact
             </Link>
 
-            {/* Show "Dashboard" only for admin */}
             {isLoggedIn && userRole === "admin" && (
               <Link
                 href="/dashboard"
@@ -198,7 +202,6 @@ export default function Navbar() {
             <Globe className="h-5 w-5" />
           </Button>
 
-          {/* Show "Logout" button if logged in */}
           {isLoggedIn ? (
             <Button
               variant="ghost"
@@ -220,7 +223,6 @@ export default function Navbar() {
             </>
           )}
 
-          {/* Mobile version - show menu */}
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-5 w-5" />
           </Button>
@@ -229,3 +231,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

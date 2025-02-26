@@ -13,7 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
+
+
 import type { Module } from "@/app/Types/moduleType";
+import AddModuleModal from "@/components/admin/AddModule";
 import { moduleService } from "@/app/service/moduleServoce";
 
 export default function ModulesPage() {
@@ -21,6 +24,7 @@ export default function ModulesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchAllModules();
@@ -66,6 +70,23 @@ export default function ModulesPage() {
     }
   };
 
+  const handleAddModule = async (moduleData: {
+    name: string;
+    description: string;
+    courseId: string;
+    moduleNumber: number;
+  }) => {
+    try {
+      console.log("Adding new module:", moduleData);
+      const newModule = await moduleService.addModule(moduleData);
+      toast.success("Module added successfully");
+      setModules((prevModules) => [...prevModules, newModule]);
+    } catch (err) {
+      console.error("Error adding module:", err);
+      toast.error("Failed to add module");
+    }
+  };
+
   const filteredModules = searchTerm
     ? modules.filter(
         (module) =>
@@ -97,7 +118,7 @@ export default function ModulesPage() {
           <h2 className="text-3xl font-bold tracking-tight">Manage Modules</h2>
           <p className="text-muted-foreground">All Available Modules</p>
         </div>
-        <Button>
+        <Button onClick={() => setIsModalOpen(true)}>
           <Plus className="mr-2 h-4 w-4" /> Add Module
         </Button>
       </div>
@@ -130,8 +151,8 @@ export default function ModulesPage() {
             {filteredModules.length > 0 ? (
               filteredModules.map((module) => (
                 <TableRow key={module._id}>
-                  <TableCell>{module.course?._id || "N/A"}</TableCell>
-                  <TableCell>{module.course?.title || "N/A"}</TableCell>
+                  <TableCell>{typeof module.course === 'object' && module.course ? (module.course as { _id: string })._id : "N/A"}</TableCell>
+                  <TableCell>{typeof module.course === 'object' && module.course ? (module.course as { title: string }).title : "N/A"}</TableCell>
                   <TableCell>
                     <div className="font-medium">{module.title}</div>
                     <div className="text-sm text-muted-foreground">
@@ -166,6 +187,13 @@ export default function ModulesPage() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Add Module Modal */}
+      <AddModuleModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAdd={handleAddModule}
+      />
     </div>
   );
 }

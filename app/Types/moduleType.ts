@@ -1,6 +1,4 @@
-// types.ts
 
-// Module Interface
 export interface Module {
   _id: string;
   title: string;
